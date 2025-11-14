@@ -6,11 +6,6 @@ const userRoutes = require('./routes/user.route');
 
 
 
-// const menuRoutes = require('./routes/menu.routes');
-// const cartRoutes = require('./routes/cart.routes');
-// const orderRoutes = require('./routes/order.routes');
-// const authRoutes = require('./routes/auth.routes'); // Firebase auth logic to be added
-
 const app = express();
 app.use(express.json());
 
