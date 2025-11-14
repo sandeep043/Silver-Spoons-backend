@@ -5,24 +5,24 @@ const jwt = require('jsonwebtoken');
 
 
 
-const registerUser = async (userData) => {
-    const { name, email, password, phoneNumber } = userData;
-    const existingUser = await userModel.findOne({ email });
-    if (existingUser) {
-        throw new Error('User already exists');
-    }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = new userModel({
-        name,
-        email,
-        password: hashedPassword,
-        phoneNumber,
-        loyaltyPoints: 0,
-    });
-    await newUser.save();
-    return newUser;
-}
+// const registerUser = async (userData) => {
+//     const { name, email, password, phoneNumber } = userData;
+//     const existingUser = await userModel.findOne({ email });
+//     if (existingUser) {
+//         throw new Error('User already exists');
+//     }
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(password, salt);
+//     const newUser = new userModel({
+//         name,
+//         email,
+//         password: hashedPassword,
+//         phoneNumber,
+//         loyaltyPoints: 0,
+//     });
+//     await newUser.save();
+//     return newUser;
+// }
 
 const loginUser = async (email, password) => {
     const user = await userModel.findOne({ email });
@@ -45,6 +45,6 @@ const loginUser = async (email, password) => {
 
 
 module.exports = {
-    registerUser,
+    // registerUser,
     loginUser,
 };
