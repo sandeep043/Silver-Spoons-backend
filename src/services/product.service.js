@@ -52,7 +52,7 @@ async function searchProducts(options = {}) {
         Product.find(filter).sort(sort).skip(skip).limit(lim).exec(),
         Product.countDocuments(filter).exec(),
     ]);
-    console.log("Products:", products);
+
 
     return {
         products,
@@ -62,7 +62,14 @@ async function searchProducts(options = {}) {
     };
 }
 
+
+const getAllCategories = async () => {
+    const categories = await Product.distinct('category');
+    return categories;
+}
+
 module.exports = {
     searchProducts,
+    getAllCategories
 };
 

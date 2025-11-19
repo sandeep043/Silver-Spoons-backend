@@ -34,7 +34,7 @@ async function searchProducts(req, res) {
 
         const filters = {
             query: query != null ? query : undefined,
-          
+
             type: type != null ? type : undefined,
             category: category != null ? category : undefined,
             minPrice: minPrice != null ? Number(minPrice) : undefined,
@@ -62,7 +62,21 @@ async function searchProducts(req, res) {
     }
 }
 
+const getAllCategories = async (req, res) => {
+    try {
+        const categories = await productService.getAllCategories();
+        return res.json({
+            success: true,
+            data: categories,
+        });
+    } catch (err) {
+        console.error('getAllCategories error:', err);
+        return res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
 module.exports = {
     searchProducts,
+    getAllCategories
 };
 

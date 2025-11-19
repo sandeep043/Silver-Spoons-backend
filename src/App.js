@@ -2,6 +2,11 @@ const express = require('express');
 const connectDB = require('../config/db');
 
 const userRoutes = require('./routes/user.route');
+const productRoutes = require('./routes/product.route');
+const cartRoutes = require('./routes/cart.route');
+// const menuRoutes = require('./routes/menu.route');
+// const orderRoutes = require('./routes/order.route');
+// const authRoutes = require('./routes/auth.route'); // For Firebase authentication
 
 
 
@@ -11,7 +16,8 @@ app.use(express.json());
 
 
 app.use('/api/user', userRoutes);
-app.use('/api/products', require('./routes/product.route'));
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
 // app.use('/api/menu', menuRoutes);
 // app.use('/api/cart', cartRoutes);
 // app.use('/api/order', orderRoutes);
