@@ -32,7 +32,7 @@ const removeItemFromCart = async (userId, productId) => {
     if (!cart) return false;
 
     const originalLength = cart.cartitems.length;
-    cart.cartitems = cart.cartitems.filter(p => p.productId.toString() !== productId.toString());
+    cart.cartitems = cart.cartitems.filter(p => p._id.toString() !== productId.toString());
 
     if (cart.cartitems.length === 0) {
         // remove entire cart document if no items left

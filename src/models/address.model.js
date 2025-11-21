@@ -37,7 +37,17 @@ const addressSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     }
+}, {
+    timestamps: true
 });
+
+// For clarity rename in code to `isDefault` while keeping existing DB field `default` compatibility.
+// If existing documents use `default`, mongoose will map to `default`. We'll add a virtual getter/setter
+// to expose `isDefault` while reading/writing the underlying `default` field for compatibility.
+
+addressSchema.virtual('isDefault')
+    .get(function () { return this.default; })
+    .set(function (v) { this.default = v; });
 
 const Address = mongoose.model('Address', addressSchema);
 
