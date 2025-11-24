@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const { PayData } = require('../../pay.config');
 const Payment = require('../models/payment.model');
 const OrderDetails = require('../models/orderDetails.model');
+const cartService = require('./cart.service');
 
 /**
  * Initiate payment: generate txn_id, compute hash, save payment record, and return PayU payment form data
@@ -101,6 +102,7 @@ const verifyPayment = async (txnid, paymentId) => {
         // Verify with PayU
         const verifiedData = await PayData.payuClient.verifyPayment(txnid);
         const transactionData = verifiedData.transaction_details[txnid];
+        console.log('Verified transaction data:', transactionData);
 
         if (!transactionData) {
             throw new Error('Transaction details not found');
@@ -140,6 +142,20 @@ const verifyPayment = async (txnid, paymentId) => {
 
             // Create order
             createdOrder = await OrderDetails.create(orderData);
+
+            // Clear user's cart after successful order creation
+            try {
+                await cartService.clearCart(paymentDoc.userId);
+                console.log(`✅ Cart cleared for user ${paymentDoc.userId} after successful payment`);
+            } catch (cartError) {
+                console.warn(`⚠️ Failed to clear cart for user ${paymentDoc.userId}:`, cartError.message);
+                // Don't throw error here - order was created successfully, cart clearing is non-critical
+            }
+
+
+
+
+
         }
 
         return {
