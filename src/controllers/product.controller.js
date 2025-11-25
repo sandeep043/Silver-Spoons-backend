@@ -75,8 +75,23 @@ const getAllCategories = async (req, res) => {
     }
 };
 
+const getAllComboCategories = async (req, res) => {
+    try {
+        const categories = await productService.getAllComboCategories();
+        return res.json({
+            success: true,
+            data: categories,
+        });
+    } catch (err) {
+        console.error('getAllComboCategories error:', err);
+        return res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+
 module.exports = {
     searchProducts,
-    getAllCategories
+    getAllCategories,
+    getAllComboCategories
 };
 

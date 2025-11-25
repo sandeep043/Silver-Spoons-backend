@@ -14,7 +14,7 @@ const addItemToCart = async (userId, productId, quantity = 1) => {
     }
 
     // Find product in products array
-    const prodIndex = cart.cartitems.findIndex(p => p._id.toString() === productId.toString());
+    const prodIndex = cart.cartitems.findIndex(p => p.productId.toString() === productId.toString());
     if (prodIndex > -1) {
         // Update existing product quantity
         cart.cartitems[prodIndex].quantity += quantity;
@@ -48,7 +48,7 @@ const decreaseItemQuantity = async (userId, productId) => {
     const cart = await Cart.findOne({ userId });
     if (!cart) return { success: false, message: 'Cart not found' };
 
-    const prodIndex = cart.cartitems.findIndex(p => p._id.toString() === productId.toString());
+    const prodIndex = cart.cartitems.findIndex(p => p.productId._id.toString() === productId.toString());
     if (prodIndex === -1) return { success: false, message: 'Item not found in cart' };
 
     if (cart.cartitems[prodIndex].quantity > 1) {

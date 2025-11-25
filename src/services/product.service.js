@@ -68,8 +68,15 @@ const getAllCategories = async () => {
     return categories;
 }
 
+const getAllComboCategories = async () => {
+    //where category contains 'combo' (case-insensitive)
+    const categories = await Product.distinct('category', { category: { $regex: 'Combo', $options: 'i' } });
+    return categories;
+}
+
 module.exports = {
     searchProducts,
-    getAllCategories
+    getAllCategories,
+    getAllComboCategories
 };
 
