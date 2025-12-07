@@ -25,6 +25,7 @@ const getOrderDetailsByOrderId = async (orderId) => {
             // If population fails (no productId refs), ignore silently
         }
 
+
         return order;
     } catch (error) {
         throw new Error(`Failed to fetch order: ${error.message}`);

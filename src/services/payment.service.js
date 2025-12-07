@@ -52,6 +52,7 @@ const initiatePayment = async (userId, paymentRequestData) => {
             phone: mobile,
             status: 'initiated',
             orderItems: orderItems || [],
+            deliveryAddress: address ? [address] : [],
             orderTimeandDate: new Date(),
             addedon: new Date()
         };
@@ -131,13 +132,31 @@ const verifyPayment = async (txnid, paymentId) => {
             }
 
             // Prepare order object
+            // Handle deliveryAddress: it may be an array or object, convert to string
+            let addressString = 'Address not provided';
+            if (paymentDoc.deliveryAddress) {
+                if (Array.isArray(paymentDoc.deliveryAddress) && paymentDoc.deliveryAddress.length > 0) {
+                    // If it's an array of objects, try to serialize the first one or extract relevant field
+                    const addr = paymentDoc.deliveryAddress[0];
+                    if (typeof addr === 'object') {
+                        // Assuming address object has fields like street, city, etc.
+                        addressString = addr.address || addr.street || JSON.stringify(addr);
+                    } else {
+                        addressString = String(addr);
+                    }
+                } else if (typeof paymentDoc.deliveryAddress === 'string') {
+                    addressString = paymentDoc.deliveryAddress;
+                }
+            }
+
             const orderData = {
                 userId: paymentDoc.userId,
-                address: paymentDoc.address || 'Address not provided',
+                address: addressString,
                 paymentId: paymentId,
                 orderItems: paymentDoc.orderItems || [],
                 totalAmount: transactionData.amt || paymentDoc.amount,
-                orderStatus: 'Pending'
+                orderStatus: 'Completed',
+
             };
 
             // Create order
